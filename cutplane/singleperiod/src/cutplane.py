@@ -611,24 +611,6 @@ def gocutplane(log, all_data):
 
     cutplane_stats(log,all_data)
 
-    ######################### SUMMARY EXPERIMENTS #############################
-
-    avg = 0
-    numbuses = 0
-
-    for bus in buses.values():
-      nodeID            = bus.nodeID
-      constrname        = "PBaldef"+str(bus.nodeID)
-      constr            = themodel.getConstrByName(constrname)
-      dual              = - constr.Pi/all_data['baseMVA']
-      avg              += dual
-      numbuses += 1
-      log.joint(constrname + ' = ' + str(dual) + '\n')
-    
-    log.joint(' welfare ' + str(all_data['objval']) + '\n')
-    log.joint(' avg price ' + str(avg/numbuses) + '\n')
-    breakexit('check prices')
-
     ###########################################################################
     all_data['runtime'] = time.time() - all_data['T0']
 
@@ -1385,9 +1367,6 @@ def cutplane_cutmanagement(log,all_data):
 def cutplane_optimize(log,all_data):
 
   themodel = all_data['themodel']
-
-  if all_data['jabr_inequalities'] or all_data['limit_inequalities']:
-    themodel.params.QCPDual = 1
 
   log.joint(' solving model with method ' + str(themodel.params.method) + '\n')
   log.joint(' crossover ' + str(themodel.params.crossover) + '\n')
