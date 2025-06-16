@@ -1546,15 +1546,22 @@ def writesol(log,all_data):
 
   log.joint('\n writing solution to ' + filename + '\n')
 
-  machinename = platform.node()
-  now = time.time()
-  solver_version = 'Gurobi 11.0.3'  
-  opsystem = "{} {} ({})".format(platform.system(), platform.release(), platform.version())
-  processor = platform.processor()
-  physical_cores = psutil.cpu_count(logical=False)
+  # Get machine name and current time
+  machinename        = platform.node()
+  now                = time.time()
+
+  # Get Gurobi version
+  version_info       = gurobipy.gurobi.version()
+  version            = '.'.join(map(str, version_info))
+  solver_version     = f"Gurobi {version}"
+
+  # System information
+  opsystem           = f"{platform.system()} {platform.release()} ({platform.version()})"
+  processor          = platform.processor()
+  physical_cores     = psutil.cpu_count(logical=False)
   logical_processors = psutil.cpu_count(logical=True)
-  cores = f"{physical_cores} physical cores, {logical_processors} logical processors"
-  ram = f"{round(psutil.virtual_memory().total / (1024 ** 3))} GB RAM"
+  cores              = f"{physical_cores} physical cores, {logical_processors} logical processors"
+  ram                = f"{round(psutil.virtual_memory().total / (1024 ** 3))} GB RAM"
 
   thefile.write('/CUTPLANEsolution : ' + all_data['casename'] + '\n')
   thefile.write('/Date : ' + str(time.strftime('%m-%d-%Y %H:%M:%S %Z', time.localtime(now))) + '\n')
@@ -1628,22 +1635,28 @@ def writesol_allvars(log,all_data):
   Qtvalues     = all_data['Qtvalues']
   i2fvalues    = all_data['i2fvalues']
 
-
   filename    = 'CPsol_' + all_data['casename'] + '.sol'
   thefilevars = open(filename,'w+')
 
   log.joint('\n writing solution to ' + filename + '\n')
 
-  machinename = platform.node()
-  now = time.time()
-  solver_version = 'Gurobi 11.0.3' 
-  opsystem = "{} {} ({})".format(platform.system(), platform.release(), platform.version())
-  processor = platform.processor()
-  physical_cores = psutil.cpu_count(logical=False)
-  logical_processors = psutil.cpu_count(logical=True)
-  cores = f"{physical_cores} physical cores, {logical_processors} logical processors"
-  ram = f"{round(psutil.virtual_memory().total / (1024 ** 3))} GB RAM"
+  # Get machine name and current time
+  machinename        = platform.node()
+  now                = time.time()
 
+  # Get Gurobi version
+  version_info       = gurobipy.gurobi.version()
+  version            = '.'.join(map(str, version_info))
+  solver_version     = f"Gurobi {version}"
+
+  # System information
+  opsystem           = f"{platform.system()} {platform.release()} ({platform.version()})"
+  processor          = platform.processor()
+  physical_cores     = psutil.cpu_count(logical=False)
+  logical_processors = psutil.cpu_count(logical=True)
+  cores              = f"{physical_cores} physical cores, {logical_processors} logical processors"
+  ram                = f"{round(psutil.virtual_memory().total / (1024 ** 3))} GB RAM"
+  
   thefilevars.write('/CUTPLANEsolution : ' + all_data['casename'] + '\n')
   thefilevars.write('/Date : ' + str(time.strftime('%m-%d-%Y %H:%M:%S %Z', time.localtime(now))) + '\n')
   thefilevars.write('/MachineName : ' + machinename + '\n')
