@@ -23,8 +23,7 @@ import psutil
 def gosocp(log,all_data):
 
     log.joint(' creating ampl object ...\n')
-    ampl = AMPL()
-
+    ampl                    = AMPL()
     all_data['ampl_object'] = ampl
         
     modfile      = all_data['modfile']
@@ -405,6 +404,7 @@ def gosocp(log,all_data):
 
 def writesol(log,all_data):
 
+    ampl         = all_data['ampl_object']
     branches     = all_data['branches']
     buses        = all_data['buses']
     gens         = all_data['gens']
@@ -445,22 +445,22 @@ def writesol(log,all_data):
 
     log.joint(' writing solution to ' + filename + '\n')
 
+    # Get machine name and current time
     machinename = platform.node()
-    now = time.time()
-    AMPL_version   = 'Version 20190223'
-    opsystem = "{} {} ({})".format(platform.system(), platform.release(), platform.version())
-    processor = platform.processor()
-    physical_cores = psutil.cpu_count(logical=False)
-    logical_processors = psutil.cpu_count(logical=True)
-    cores = f"{physical_cores} physical cores, {logical_processors} logical processors"
-    ram = f"{round(psutil.virtual_memory().total / (1024 ** 3))} GB RAM"
+    now         = time.time()
 
-    if all_data['solver'] == 'knitroampl':
-        solver_version = 'Artelys Knitro 14.1.0'
-    elif all_data['solver'] == 'gurobi':
-        solver_version = 'Gurobi 11.0.3'
-    elif all_data['solver'] == 'mosek':
-        solver_version = 'MOSEK 10.2.0'
+    # Get AMPL version and solver
+    version_str    = ampl.get_option('version')
+    AMPL_version   = f"version date {version_str.split()[2]}"
+    solver_version = all_data['solver']
+
+    # System information
+    opsystem           = f"{platform.system()} {platform.release()} ({platform.version()})"
+    processor          = platform.processor()
+    physical_cores     = psutil.cpu_count(logical=False)
+    logical_processors = psutil.cpu_count(logical=True)
+    cores              = f"{physical_cores} physical cores, {logical_processors} logical processors"
+    ram                = f"{round(psutil.virtual_memory().total / (1024 ** 3))} GB RAM"
         
     if all_data['modfile'] == 'jabr.mod' or all_data['modfile'] == 'jabr_mosek.mod':
         thefile.write('/JABRsolution : ' + all_data['casename'] + '\n')
@@ -527,6 +527,7 @@ def writesol(log,all_data):
 
 def writesol_allvars(log,all_data):
 
+    ampl          = all_data['ampl_object']
     branches      = all_data['branches']
     buses         = all_data['buses']
     gens          = all_data['gens']
@@ -567,26 +568,26 @@ def writesol_allvars(log,all_data):
     
     thefilevars   = open(filename,'w+')
 
-
     log.joint(' writing solution to ' + filename + '\n')
 
+    # Get machine name and current time
     machinename = platform.node()
-    now = time.time()
-    AMPL_version   = 'Version 20190223'
-    opsystem = "{} {} ({})".format(platform.system(), platform.release(), platform.version())
-    processor = platform.processor()
-    physical_cores = psutil.cpu_count(logical=False)
+    now         = time.time()
+
+    # Get AMPL version and solver
+    version_str    = ampl.get_option('version')
+    AMPL_version   = f"version date {version_str.split()[2]}"
+    solver_version = all_data['solver']
+
+    # System information
+    opsystem           = f"{platform.system()} {platform.release()} ({platform.version()})"
+    processor          = platform.processor()
+    physical_cores     = psutil.cpu_count(logical=False)
     logical_processors = psutil.cpu_count(logical=True)
-    cores = f"{physical_cores} physical cores, {logical_processors} logical processors"
-    ram = f"{round(psutil.virtual_memory().total / (1024 ** 3))} GB RAM"
+    cores              = f"{physical_cores} physical cores, {logical_processors} logical processors"
+    ram                = f"{round(psutil.virtual_memory().total / (1024 ** 3))} GB RAM"
 
-    if all_data['solver'] == 'knitroampl':
-        solver_version = 'Artelys Knitro 14.1.0'
-    elif all_data['solver'] == 'gurobi':
-        solver_version = 'Gurobi 11.0.3'
-    elif all_data['solver'] == 'mosek':
-        solver_version = 'MOSEK 10.2.0'    
-
+   
     if all_data['modfile'] == 'jabr.mod' or all_data['modfile'] == 'jabr_mosek.mod':
         thefilevars.write('/JABRsolution : ' + all_data['casename'] + '\n')
     elif all_data['modfile'] == 'i2.mod' or all_data['modfile'] == 'i2_mosek.mod':
@@ -1106,8 +1107,7 @@ def gosocp2(log,all_data):
 def gosocp_mosek(log,all_data):
 
     log.joint(' creating ampl object ...\n')
-    ampl = AMPL()
-
+    ampl                    = AMPL()
     all_data['ampl_object'] = ampl
         
     modfile = all_data['modfile']
@@ -1509,8 +1509,7 @@ def gosocp_mosek(log,all_data):
 def gosocp2_mosek(log,all_data):
 
     log.joint(' creating ampl object ...\n')
-    ampl = AMPL()
-
+    ampl                    = AMPL()
     all_data['ampl_object'] = ampl
         
     modfile = all_data['modfile']
