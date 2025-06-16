@@ -23,7 +23,9 @@ def goac_mtp(log,all_data):
     
     log.joint(' creating ampl object ...\n')
     
-    ampl         = AMPL()
+    ampl                    = AMPL()
+    all_data['ampl_object'] = ampl
+    
     casename     = all_data['casename']
     casetype     = all_data['casetype']
     modfile      = all_data['modfile']
@@ -382,6 +384,7 @@ def goac_mtp(log,all_data):
         
 def writesol(log,all_data):
 
+    ampl         = all_data['ampl_object']
     casename     = all_data['casename']
     casetype     = all_data['casetype']    
     branches     = all_data['branches']
@@ -480,6 +483,7 @@ def writesol(log,all_data):
 
 def writesol_qcqp_allvars(log,all_data):
 
+    ampl         = all_data['ampl_object']
     casename     = all_data['casename']
     casetype     = all_data['casetype']
     branches     = all_data['branches']
