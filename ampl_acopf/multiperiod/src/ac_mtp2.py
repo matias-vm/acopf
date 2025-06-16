@@ -23,7 +23,9 @@ def goac_mtp2(log,all_data):
     
     log.joint(' creating ampl object ...\n')
 
-    ampl         = AMPL()
+    ampl                    = AMPL()
+    all_data['ampl_object'] = ampl
+    
     casename     = all_data['casename']
     casetype     = all_data['casetype']
     modfile      = all_data['modfile']
@@ -524,6 +526,7 @@ def goac_mtp2(log,all_data):
         
 def writesol(log,all_data):
 
+    ampl         = all_data['ampl_object']
     casename     = all_data['casename']
     casetype     = all_data['casetype']
     branches     = all_data['branches']
@@ -548,16 +551,22 @@ def writesol(log,all_data):
 
     log.joint('\n writing solution to ' + filename + '\n')
 
+    # Get machine name and current time
     machinename = platform.node()
-    now = time.time()
-    AMPL_version = 'Version 20190223'
-    solver_version = 'Artelys Knitro 14.1.0'
-    opsystem = "{} {} ({})".format(platform.system(), platform.release(), platform.version())
-    processor = platform.processor() 
-    physical_cores = psutil.cpu_count(logical=False)
+    now         = time.time()
+
+    # Get AMPL version and solver
+    version_str    = ampl.get_option('version')
+    AMPL_version   = f"version date {version_str.split()[2]}"
+    solver_version = all_data['solver']
+
+    # System information
+    opsystem           = f"{platform.system()} {platform.release()} ({platform.version()})"
+    processor          = platform.processor()
+    physical_cores     = psutil.cpu_count(logical=False)
     logical_processors = psutil.cpu_count(logical=True)
-    cores = f"{physical_cores} physical cores, {logical_processors} logical processors"
-    ram = f"{round(psutil.virtual_memory().total / (1024 ** 3))} GB RAM"
+    cores              = f"{physical_cores} physical cores, {logical_processors} logical processors"
+    ram                = f"{round(psutil.virtual_memory().total / (1024 ** 3))} GB RAM"
 
     thefile.write('/ACsolution : ' + casename + " T" + str(T) + " " + casetype + '\n')
     thefile.write('/Date : ' + str(time.strftime('%m-%d-%Y %H:%M:%S %Z', time.localtime(now))) + '\n')
@@ -576,7 +585,7 @@ def writesol(log,all_data):
     for buscount in buses.keys():
         for k in range(T):
             vval       = vvalues[k][buscount]
-            thetaval   = thetavalues[k][buscount]
+            thetaval   = thetavalues[k][buscount] * (180 / math.pi)  # angles in degrees
             line = 'bus ' + str(buscount) + ' M ' + str(vval) + ' A ' + str(thetaval) + ' k ' + str(k) + '\n'
             thefile.write(line)
             
@@ -617,6 +626,7 @@ def writesol(log,all_data):
 
 def writesol_qcqp_allvars(log,all_data):
 
+    ampl          = all_data['ampl_object']
     casename      = all_data['casename']
     casetype      = all_data['casetype']    
     branches      = all_data['branches']
@@ -640,16 +650,22 @@ def writesol_qcqp_allvars(log,all_data):
     
     log.joint('\n writing solution to ' + filenamevars + '\n')
 
+    # Get machine name and current time
     machinename = platform.node()
-    now = time.time()
-    AMPL_version = 'Version 20190223'
-    solver_version = 'Artelys Knitro 14.1.0'
-    opsystem = "{} {} ({})".format(platform.system(), platform.release(), platform.version())
-    processor = platform.processor()
-    physical_cores = psutil.cpu_count(logical=False)
+    now         = time.time()
+
+    # Get AMPL version and solver
+    version_str    = ampl.get_option('version')
+    AMPL_version   = f"version date {version_str.split()[2]}"
+    solver_version = all_data['solver']
+
+    # System information
+    opsystem           = f"{platform.system()} {platform.release()} ({platform.version()})"
+    processor          = platform.processor()
+    physical_cores     = psutil.cpu_count(logical=False)
     logical_processors = psutil.cpu_count(logical=True)
-    cores = f"{physical_cores} physical cores, {logical_processors} logical processors"
-    ram = f"{round(psutil.virtual_memory().total / (1024 ** 3))} GB RAM"
+    cores              = f"{physical_cores} physical cores, {logical_processors} logical processors"
+    ram                = f"{round(psutil.virtual_memory().total / (1024 ** 3))} GB RAM"
 
     thefilevars.write('/ACsolution : ' + casename + " T" + str(T) + " " + casetype + '\n')
     thefilevars.write('/Date : ' + str(time.strftime('%m-%d-%Y %H:%M:%S %Z', time.localtime(now))) + '\n')
@@ -766,6 +782,7 @@ def writesol_qcqp_allvars(log,all_data):
 
 def writesol_k(log,all_data,k):
 
+    ampl         = all_data['ampl_object']
     casename     = all_data['casename']    
     casetype     = all_data['casetype']
     branches     = all_data['branches']
@@ -788,16 +805,22 @@ def writesol_k(log,all_data,k):
 
     log.joint('\n writing solution to ' + filename + '\n')
 
+    # Get machine name and current time
     machinename = platform.node()
-    now = time.time()
-    AMPL_version = 'Version 20190223'
-    solver_version = 'Artelys Knitro 14.1.0'
-    opsystem = "{} {} ({})".format(platform.system(), platform.release(), platform.version())
-    processor = platform.processor()
-    physical_cores = psutil.cpu_count(logical=False)
+    now         = time.time()
+
+    # Get AMPL version and solver
+    version_str    = ampl.get_option('version')
+    AMPL_version   = f"version date {version_str.split()[2]}"
+    solver_version = all_data['solver']
+
+    # System information
+    opsystem           = f"{platform.system()} {platform.release()} ({platform.version()})"
+    processor          = platform.processor()
+    physical_cores     = psutil.cpu_count(logical=False)
     logical_processors = psutil.cpu_count(logical=True)
-    cores = f"{physical_cores} physical cores, {logical_processors} logical processors"
-    ram = f"{round(psutil.virtual_memory().total / (1024 ** 3))} GB RAM"
+    cores              = f"{physical_cores} physical cores, {logical_processors} logical processors"
+    ram                = f"{round(psutil.virtual_memory().total / (1024 ** 3))} GB RAM"
         
     thefile.write('/ACsolution : ' + casename + " " + str(k) + "/" + str(T) + " " + casetype + '\n')
     thefile.write('/Date : ' + str(time.strftime('%m-%d-%Y %H:%M:%S %Z', time.localtime(now))) + '\n')
@@ -815,7 +838,7 @@ def writesol_k(log,all_data,k):
     for buscount in buses.keys():
         vval       = vvalues[buscount]
         f          = buses[buscount].nodeID
-        thetaval   = thetavalues[buscount]
+        thetaval   = thetavalues[buscount] * (180 / math.pi)  # angles in degrees
         line = 'bus ' + str(buscount) + ' M ' + str(vval) + ' A ' + str(thetaval) + '\n'
         thefile.write(line)
             
@@ -855,6 +878,7 @@ def writesol_k(log,all_data,k):
 
 def writesol_qcqp_allvars_k(log,all_data,k):
 
+    ampl          = all_data['ampl_object']
     casename      = all_data['casename']    
     casetype      = all_data['casetype']    
     branches      = all_data['branches']
@@ -877,17 +901,23 @@ def writesol_qcqp_allvars_k(log,all_data,k):
     
     log.joint('\n writing solution to ' + filenamevars + '\n')
 
-
+    # Get machine name and current time
     machinename = platform.node()
-    now = time.time()
-    AMPL_version = 'Version 20190223'
-    solver_version = 'Artelys Knitro 14.1.0'
-    opsystem = "{} {} ({})".format(platform.system(), platform.release(), platform.version())
-    processor = platform.processor()
-    physical_cores = psutil.cpu_count(logical=False)
+    now         = time.time()
+
+    # Get AMPL version and solver
+    version_str    = ampl.get_option('version')
+    AMPL_version   = f"version date {version_str.split()[2]}"
+    solver_version = all_data['solver']
+
+    # System information
+    opsystem           = f"{platform.system()} {platform.release()} ({platform.version()})"
+    processor          = platform.processor()
+    physical_cores     = psutil.cpu_count(logical=False)
     logical_processors = psutil.cpu_count(logical=True)
-    cores = f"{physical_cores} physical cores, {logical_processors} logical processors"
-    ram = f"{round(psutil.virtual_memory().total / (1024 ** 3))} GB RAM"
+    cores              = f"{physical_cores} physical cores, {logical_processors} logical processors"
+    ram                = f"{round(psutil.virtual_memory().total / (1024 ** 3))} GB RAM"
+
     
     thefilevars.write('/ACsolution : ' + casename + " " + str(k) + "/" + str(T) + " " + casetype + '\n')    
     thefilevars.write('/Date : ' + str(time.strftime('%m-%d-%Y %H:%M:%S %Z', time.localtime(now))) + '\n')
