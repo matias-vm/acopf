@@ -339,22 +339,27 @@ def writesol(log,all_data):
     Qfvalues     = all_data['Qfvalues']
     Qtvalues     = all_data['Qtvalues']
     
-
     filename      = 'ACsol_' + all_data['casename'] + '.txt'
     thefile       = open(filename,'w+')
 
     log.joint(' writing solution to ' + filename + '\n')
 
+    # Get machine name and current time
     machinename = platform.node()
-    now = time.time()
-    AMPL_version   = 'Version 20190223'
-    solver_version = 'Artelys Knitro 14.1.0'   
-    opsystem = "{} {} ({})".format(platform.system(), platform.release(), platform.version())
-    processor = platform.processor()
-    physical_cores = psutil.cpu_count(logical=False)
+    now         = time.time()
+
+    # Get AMPL version and solver
+    version_str    = ampl.get_option('version')
+    AMPL_version   = f"version date {version_str.split()[2]}"
+    solver_version = all_data['solver']
+
+    # System information
+    opsystem           = f"{platform.system()} {platform.release()} ({platform.version()})"
+    processor          = platform.processor()
+    physical_cores     = psutil.cpu_count(logical=False)
     logical_processors = psutil.cpu_count(logical=True)
-    cores = f"{physical_cores} physical cores, {logical_processors} logical processors"
-    ram = f"{round(psutil.virtual_memory().total / (1024 ** 3))} GB RAM"    
+    cores              = f"{physical_cores} physical cores, {logical_processors} logical processors"
+    ram                = f"{round(psutil.virtual_memory().total / (1024 ** 3))} GB RAM"
     
     thefile.write('/ACsolution : ' + all_data['casename'] + '\n')
     thefile.write('/Date : ' + str(time.strftime('%m-%d-%Y %H:%M:%S %Z', time.localtime(now))) + '\n')
@@ -372,7 +377,7 @@ def writesol(log,all_data):
     for buscount in buses.keys():
         vval       = vvalues[buscount]
         f          = buses[buscount].nodeID
-        thetaval   = thetavalues[buscount]
+        thetaval   = thetavalues[buscount] * (180 / math.pi)  # angles in degrees
         line = 'bus ' + str(buscount) + ' M ' + str(vval) + ' A ' + str(thetaval) + '\n'
         thefile.write(line)
             
@@ -433,16 +438,22 @@ def writesol_qcqp_allvars(log,all_data):
     
     log.joint(' writing solution to ' + filenamevars + '\n')
 
+    # Get machine name and current time
     machinename = platform.node()
-    now = time.time()
-    AMPL_version   = 'Version 20231012'
-    solver_version = 'Artelys Knitro 13.2.0'   
-    opsystem = "{} {} ({})".format(platform.system(), platform.release(), platform.version())
-    processor = platform.processor()
-    physical_cores = psutil.cpu_count(logical=False)
+    now         = time.time()
+
+    # Get AMPL version and solver
+    version_str    = ampl.get_option('version')
+    AMPL_version   = f"version date {version_str.split()[2]}"
+    solver_version = all_data['solver']
+
+    # System information
+    opsystem           = f"{platform.system()} {platform.release()} ({platform.version()})"
+    processor          = platform.processor()
+    physical_cores     = psutil.cpu_count(logical=False)
     logical_processors = psutil.cpu_count(logical=True)
-    cores = f"{physical_cores} physical cores, {logical_processors} logical processors"
-    ram = f"{round(psutil.virtual_memory().total / (1024 ** 3))} GB RAM"    
+    cores              = f"{physical_cores} physical cores, {logical_processors} logical processors"
+    ram                = f"{round(psutil.virtual_memory().total / (1024 ** 3))} GB RAM"
     
     thefilevars.write('/ACsolution : ' + all_data['casename'] + '\n')
     thefilevars.write('/Date : ' + str(time.strftime('%m-%d-%Y %H:%M:%S %Z', time.localtime(now))) + '\n')
