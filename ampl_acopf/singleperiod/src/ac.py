@@ -22,10 +22,8 @@ import psutil
 
 def goac(log,all_data):
 
-    
     log.joint(' creating ampl object ...\n')
-    ampl = AMPL()
-
+    ampl                    = AMPL()
     all_data['ampl_object'] = ampl
 
     IDtoCountmap = all_data['IDtoCountmap']    
@@ -323,6 +321,7 @@ def goac(log,all_data):
             
 def writesol(log,all_data):
 
+    ampl         = all_data['ampl_object']
     branches     = all_data['branches']
     buses        = all_data['buses']
     gens         = all_data['gens']
@@ -416,6 +415,7 @@ def writesol(log,all_data):
 
 def writesol_qcqp_allvars(log,all_data):
 
+    ampl          = all_data['ampl_object']
     branches      = all_data['branches']
     buses         = all_data['buses']
     gens          = all_data['gens']
