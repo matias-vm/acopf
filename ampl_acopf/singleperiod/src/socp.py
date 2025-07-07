@@ -404,6 +404,7 @@ def gosocp(log,all_data):
 
 def writesol(log,all_data):
 
+    baseMVA      = all_data['baseMVA']
     ampl         = all_data['ampl_object']
     branches     = all_data['branches']
     buses        = all_data['buses']
@@ -463,9 +464,9 @@ def writesol(log,all_data):
     ram                = f"{round(psutil.virtual_memory().total / (1024 ** 3))} GB RAM"
         
     if all_data['modfile'] == 'jabr.mod' or all_data['modfile'] == 'jabr_mosek.mod':
-        thefile.write('/JABRsolution : ' + all_data['casename'] + '\n')
+        thefile.write('/JABRsolution (in p.u.) : ' + all_data['casename'] + '\n')
     elif all_data['modfile'] == 'i2.mod' or all_data['modfile'] == 'i2_mosek.mod':
-        thefile.write('/I2solution : ' + all_data['casename'] + '\n')
+        thefile.write('/I2solution (in p.u.) : ' + all_data['casename'] + '\n')
     
     thefile.write('/Date : ' + str(time.strftime('%m-%d-%Y %H:%M:%S %Z', time.localtime(now))) + '\n')
     thefile.write('/MachineName : ' + machinename + '\n')
@@ -475,6 +476,7 @@ def writesol(log,all_data):
     thefile.write('/RAM : ' + ram + '\n')
     thefile.write('/AMPL : ' + AMPL_version + '\n')
     thefile.write('/Solver : ' + solver_version + '\n')
+    thefile.write('/baseMVA : ' + str(baseMVA) + '\n')
     thefile.write('objvalue ' + str(all_data['objvalue']) + '\n')
     
     thefile.write('voltages:\n')
@@ -527,6 +529,7 @@ def writesol(log,all_data):
 
 def writesol_allvars(log,all_data):
 
+    baseMVA       = all_data['baseMVA']
     ampl          = all_data['ampl_object']
     branches      = all_data['branches']
     buses         = all_data['buses']
@@ -589,9 +592,9 @@ def writesol_allvars(log,all_data):
 
    
     if all_data['modfile'] == 'jabr.mod' or all_data['modfile'] == 'jabr_mosek.mod':
-        thefilevars.write('/JABRsolution : ' + all_data['casename'] + '\n')
+        thefilevars.write('/JABRsolution (in p.u.) : ' + all_data['casename'] + '\n')
     elif all_data['modfile'] == 'i2.mod' or all_data['modfile'] == 'i2_mosek.mod':
-        thefilevars.write('/I2solution : ' + all_data['casename'] + '\n')
+        thefilevars.write('/I2solution (in p.u.) : ' + all_data['casename'] + '\n')
         
     thefilevars.write('/Date : ' + str(time.strftime('%m-%d-%Y %H:%M:%S %Z', time.localtime(now))) + '\n')
     thefilevars.write('/MachineName : ' + machinename + '\n')
@@ -601,6 +604,7 @@ def writesol_allvars(log,all_data):
     thefilevars.write('/RAM : ' + ram + '\n')
     thefilevars.write('/AMPL : ' + AMPL_version + '\n')
     thefilevars.write('/Solver : ' + solver_version + '\n')
+    thefilevars.write('/baseMVA : ' + str(baseMVA) + '\n')
     thefilevars.write('/Objvalue ' + str(all_data['objvalue']) + '\n')
     
     for buscount in buses.keys():
