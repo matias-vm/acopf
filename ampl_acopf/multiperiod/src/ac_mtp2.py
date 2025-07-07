@@ -526,6 +526,7 @@ def goac_mtp2(log,all_data):
         
 def writesol(log,all_data):
 
+    baseMVA      = all_data['baseMVA']
     ampl         = all_data['ampl_object']
     casename     = all_data['casename']
     casetype     = all_data['casetype']
@@ -568,7 +569,7 @@ def writesol(log,all_data):
     cores              = f"{physical_cores} physical cores, {logical_processors} logical processors"
     ram                = f"{round(psutil.virtual_memory().total / (1024 ** 3))} GB RAM"
 
-    thefile.write('/ACsolution : ' + casename + " T" + str(T) + " " + casetype + '\n')
+    thefile.write('/ACsolution (in p.u.) : ' + casename + " T" + str(T) + " " + casetype + '\n')
     thefile.write('/Date : ' + str(time.strftime('%m-%d-%Y %H:%M:%S %Z', time.localtime(now))) + '\n')
     thefile.write('/MachineName : ' + machinename + '\n')
     thefile.write('/Processor : ' + processor + '\n')
@@ -577,6 +578,7 @@ def writesol(log,all_data):
     thefile.write('/RAM : ' + ram + '\n')
     thefile.write('/AMPL : ' + AMPL_version + '\n')
     thefile.write('/Solver : ' + solver_version + '\n')
+    thefile.write('baseMVA : ' + str(baseMVA) + '\n')
     thefile.write('objvalue ' + str(sum(all_data['objvalue'].values())) + '\n')
     thefile.write('time-periods ' + str(T) + '\n')
         
@@ -626,6 +628,7 @@ def writesol(log,all_data):
 
 def writesol_qcqp_allvars(log,all_data):
 
+    baseMVA       = all_data['baseMVA']
     ampl          = all_data['ampl_object']
     casename      = all_data['casename']
     casetype      = all_data['casetype']    
@@ -667,7 +670,7 @@ def writesol_qcqp_allvars(log,all_data):
     cores              = f"{physical_cores} physical cores, {logical_processors} logical processors"
     ram                = f"{round(psutil.virtual_memory().total / (1024 ** 3))} GB RAM"
 
-    thefilevars.write('/ACsolution : ' + casename + " T" + str(T) + " " + casetype + '\n')
+    thefilevars.write('/ACsolution (in p.u.) : ' + casename + " T" + str(T) + " " + casetype + '\n')
     thefilevars.write('/Date : ' + str(time.strftime('%m-%d-%Y %H:%M:%S %Z', time.localtime(now))) + '\n')
     thefilevars.write('/MachineName : ' + machinename + '\n')
     thefilevars.write('/Processor : ' + processor + '\n')
@@ -676,6 +679,7 @@ def writesol_qcqp_allvars(log,all_data):
     thefilevars.write('/RAM : ' + ram + '\n')
     thefilevars.write('/AMPL : ' + AMPL_version + '\n')
     thefilevars.write('/Solver : ' + solver_version + '\n')
+    thefilevars.write('/baseMVA : ' + str(baseMVA) + '\n')
     thefilevars.write('/Objvalue : ' + str(sum(all_data['objvalue'].values())) + '\n')
     thefilevars.write('/Time-periods ' + str(T) + '\n')
     
@@ -782,6 +786,7 @@ def writesol_qcqp_allvars(log,all_data):
 
 def writesol_k(log,all_data,k):
 
+    baseMVA      = all_data['baseMVA']
     ampl         = all_data['ampl_object']
     casename     = all_data['casename']    
     casetype     = all_data['casetype']
@@ -822,7 +827,7 @@ def writesol_k(log,all_data,k):
     cores              = f"{physical_cores} physical cores, {logical_processors} logical processors"
     ram                = f"{round(psutil.virtual_memory().total / (1024 ** 3))} GB RAM"
         
-    thefile.write('/ACsolution : ' + casename + " " + str(k) + "/" + str(T) + " " + casetype + '\n')
+    thefile.write('/ACsolution (in p.u.) : ' + casename + " " + str(k) + "/" + str(T) + " " + casetype + '\n')
     thefile.write('/Date : ' + str(time.strftime('%m-%d-%Y %H:%M:%S %Z', time.localtime(now))) + '\n')
     thefile.write('/MachineName : ' + machinename + '\n')
     thefile.write('/Processor : ' + processor + '\n')
@@ -831,6 +836,7 @@ def writesol_k(log,all_data,k):
     thefile.write('/RAM : ' + ram + '\n')
     thefile.write('/AMPL : ' + AMPL_version + '\n')
     thefile.write('/Solver : ' + solver_version + '\n')
+    thefile.write('/baseMVA : ' + str(baseMVA) + '\n')
     thefile.write('objvalue ' + str(all_data['objvalue'][k]) + '\n')
     
     thefile.write('voltages and angles:\n')
@@ -878,6 +884,7 @@ def writesol_k(log,all_data,k):
 
 def writesol_qcqp_allvars_k(log,all_data,k):
 
+    baseMVA       = all_data['baseMVA']
     ampl          = all_data['ampl_object']
     casename      = all_data['casename']    
     casetype      = all_data['casetype']    
@@ -919,7 +926,7 @@ def writesol_qcqp_allvars_k(log,all_data,k):
     ram                = f"{round(psutil.virtual_memory().total / (1024 ** 3))} GB RAM"
 
     
-    thefilevars.write('/ACsolution : ' + casename + " " + str(k) + "/" + str(T) + " " + casetype + '\n')    
+    thefilevars.write('/ACsolution (in p.u.) : ' + casename + " " + str(k) + "/" + str(T) + " " + casetype + '\n')    
     thefilevars.write('/Date : ' + str(time.strftime('%m-%d-%Y %H:%M:%S %Z', time.localtime(now))) + '\n')
     thefilevars.write('/MachineName : ' + machinename + '\n')
     thefilevars.write('/Processor : ' + processor + '\n')
@@ -928,6 +935,7 @@ def writesol_qcqp_allvars_k(log,all_data,k):
     thefilevars.write('/RAM : ' + ram + '\n')
     thefilevars.write('/AMPL : ' + AMPL_version + '\n')
     thefilevars.write('/Solver : ' + solver_version + '\n')
+    thefilevars.write('/baseMVA : ' + str(baseMVA) + '\n')
     thefilevars.write('/Objvalue : ' + str(all_data['objvalue'][k]) + '\n')
     
     for buscount in buses.keys():
