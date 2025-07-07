@@ -327,6 +327,7 @@ def writesol(log,all_data):
     gens         = all_data['gens']
     IDtoCountmap = all_data['IDtoCountmap']
     tolerance    = 1e-05
+    baseMVA      = all_data['baseMVA']
 
     objvalue     = all_data['objvalue']
     vvalues      = all_data['vvalues']
@@ -360,7 +361,7 @@ def writesol(log,all_data):
     cores              = f"{physical_cores} physical cores, {logical_processors} logical processors"
     ram                = f"{round(psutil.virtual_memory().total / (1024 ** 3))} GB RAM"
     
-    thefile.write('/ACsolution : ' + all_data['casename'] + '\n')
+    thefile.write('/ACsolution (in p.u.) : ' + all_data['casename'] + '\n')
     thefile.write('/Date : ' + str(time.strftime('%m-%d-%Y %H:%M:%S %Z', time.localtime(now))) + '\n')
     thefile.write('/MachineName : ' + machinename + '\n')
     thefile.write('/Processor : ' + processor + '\n')
@@ -369,6 +370,7 @@ def writesol(log,all_data):
     thefile.write('/RAM : ' + ram + '\n')
     thefile.write('/AMPL : ' + AMPL_version + '\n')
     thefile.write('/Solver : ' + solver_version + '\n')
+    thefile.write('baseMVA ' + str(all_data['baseMVA']) + '\n')
     thefile.write('objvalue ' + str(all_data['objvalue']) + '\n')
     
     thefile.write('voltages and angles:\n')
@@ -421,6 +423,7 @@ def writesol_qcqp_allvars(log,all_data):
     gens          = all_data['gens']
     IDtoCountmap  = all_data['IDtoCountmap']
     tolerance     = 1e-05
+    baseMVA       = all_data['baseMVA']
 
     objvalue     = all_data['objvalue']
     vvalues      = all_data['vvalues']
@@ -455,7 +458,7 @@ def writesol_qcqp_allvars(log,all_data):
     cores              = f"{physical_cores} physical cores, {logical_processors} logical processors"
     ram                = f"{round(psutil.virtual_memory().total / (1024 ** 3))} GB RAM"
     
-    thefilevars.write('/ACsolution : ' + all_data['casename'] + '\n')
+    thefilevars.write('/ACsolution (in p.u.) : ' + all_data['casename'] + '\n')
     thefilevars.write('/Date : ' + str(time.strftime('%m-%d-%Y %H:%M:%S %Z', time.localtime(now))) + '\n')
     thefilevars.write('/MachineName : ' + machinename + '\n')
     thefilevars.write('/Processor : ' + processor + '\n')
@@ -464,6 +467,7 @@ def writesol_qcqp_allvars(log,all_data):
     thefilevars.write('/RAM : ' + ram + '\n')
     thefilevars.write('/AMPL : ' + AMPL_version + '\n')
     thefilevars.write('/Solver : ' + solver_version + '\n')
+    thefilevars.write('/baseMVA : ' + str(all_data['baseMVA']) + '\n')
     thefilevars.write('/Objvalue : ' + str(all_data['objvalue']) + '\n')
     
     for buscount in buses.keys():
