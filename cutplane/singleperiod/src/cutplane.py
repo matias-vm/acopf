@@ -1526,7 +1526,8 @@ def getsol_ampl(log,all_data):
 
 
 def writesol(log,all_data):
-    
+
+  baseMVA      = all_data['baseMVA']
   branches     = all_data['branches']
   buses        = all_data['buses']
   gens         = all_data['gens']
@@ -1563,7 +1564,7 @@ def writesol(log,all_data):
   cores              = f"{physical_cores} physical cores, {logical_processors} logical processors"
   ram                = f"{round(psutil.virtual_memory().total / (1024 ** 3))} GB RAM"
 
-  thefile.write('/CUTPLANEsolution : ' + all_data['casename'] + '\n')
+  thefile.write('/CUTPLANEsolution (in p.u.) : ' + all_data['casename'] + '\n')
   thefile.write('/Date : ' + str(time.strftime('%m-%d-%Y %H:%M:%S %Z', time.localtime(now))) + '\n')
   thefile.write('/MachineName : ' + machinename + '\n')
   thefile.write('/Processor : ' + processor + '\n')
@@ -1571,6 +1572,7 @@ def writesol(log,all_data):
   thefile.write('/Cores : ' + cores + '\n')
   thefile.write('/RAM : ' + ram + '\n')
   thefile.write('/Solver : ' + solver_version + '\n')
+  thefile.write('/baseMVA : ' + str(baseMVA) + '\n')
   thefile.write('objvalue ' + str(all_data['objval']) + '\n')
   thefile.write('round' + str(all_data['round']) + '\n')
     
@@ -1621,6 +1623,7 @@ def writesol(log,all_data):
 
 def writesol_allvars(log,all_data):
 
+  baseMVA      = all_data['baseMVA']
   branches     = all_data['branches']
   buses        = all_data['buses']
   gens         = all_data['gens']
@@ -1657,7 +1660,7 @@ def writesol_allvars(log,all_data):
   cores              = f"{physical_cores} physical cores, {logical_processors} logical processors"
   ram                = f"{round(psutil.virtual_memory().total / (1024 ** 3))} GB RAM"
   
-  thefilevars.write('/CUTPLANEsolution : ' + all_data['casename'] + '\n')
+  thefilevars.write('/CUTPLANEsolution (in p.u.) : ' + all_data['casename'] + '\n')
   thefilevars.write('/Date : ' + str(time.strftime('%m-%d-%Y %H:%M:%S %Z', time.localtime(now))) + '\n')
   thefilevars.write('/MachineName : ' + machinename + '\n')
   thefilevars.write('/Processor : ' + processor + '\n')
@@ -1665,6 +1668,7 @@ def writesol_allvars(log,all_data):
   thefilevars.write('/Cores : ' + cores + '\n')
   thefilevars.write('/RAM : ' + ram + '\n')
   thefilevars.write('/Solver : ' + solver_version + '\n')
+  thefilevars.write('/baseMVA : ' + str(baseMVA) + '\n')
   thefilevars.write('/Objvalue ' + str(all_data['objval']) + '\n')
 
   for buscount in buses.keys():
