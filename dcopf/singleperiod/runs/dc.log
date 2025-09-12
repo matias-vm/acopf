@@ -1,0 +1,55 @@
+Starting log: Fri Sep 12 14:48:29 2025
+Running on: frito.local
+Version Sun.Sep..08.201000.2024@mpc-linux-01
+
+Reading configuration file dcopf.conf
+Settings:
+  casefilename ../data/case9241pegase.m
+  lpfilename dcopf.lp
+  dictionary_input False
+  writeLP 0
+  casename case9241pegase
+  condnumber 0
+  casetype 
+Reading case file ../data/case9241pegase.m
+  Found mpc.version on line 64
+  Found mpc.baseMVA on line 68
+    baseMVA: 100.000000
+  Found mpc.bus on line 72
+    Slack bus: 4231
+    Bus 4231 ID 4231 is the reference bus
+    Found end of bus section on line 9314
+    sumloadPd 312354.120000 numPload 4428
+    sumloadQd 73581.610000
+    9241 buses
+  Found mpc.gen on line 9318
+    Found end of gen section on line 10764
+    number of generators: 1445
+    number of buses with gens: 1445
+    summaxPg 530107.340000 summaxQg inf
+  Found mpc.branch on line 10768
+    Found end of branch section on line 26818
+    numbranches: 16049 active: 16049
+    ---> 9754 unconstrained.
+  Found mpc.gencost on line 26824
+    Found end of gencost section on line 28270
+Reading time: 0.108381 s
+
+DC formulation.
+Creating variables.
+  1446 terms in the objective
+Creating constraints.
+  adding active power flow definitions.
+    16049 active power flow definitions added.
+  adding constraints stating bus injection = total outgoing power flow.
+    9241 constraints added.
+  adding injection definition constraints.
+    9241 injection definition constraints added.nConstructed DCOPF model with 35977 variables and 34531 constraints.
+
+
+Model Status: optimal.
+
+Objective value = 312354Overall time taken (model construction + optimization): 0.375034 s.
+
+ writing casename, opt stauts, obj, dinfs, runtime, numvars and constrs, and (kappa) to summary_dcopf.log
+Closing log: Fri Sep 12 14:48:30 2025
