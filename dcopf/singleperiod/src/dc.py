@@ -46,10 +46,11 @@ def lpformulator_dc(alldata):
             lpformulator_dc_store_sol(log, alldata, model)
 
         # Write solution to file
-        if alldata['writesol'] and model.SolCount > 0:
+        if alldata['writesol'] and (model.SolCount > 0):
             lpformulator_dc_writesol(log, alldata)
             lpformulator_dc_writesol_allvars(log, alldata)
-        elif alldata['writesol'] and model.SolCount == 0:
+
+        elif alldata['writesol'] and (model.SolCount == 0):
             log.joint("No solution to write.\n")
 
         endtime = time.time()

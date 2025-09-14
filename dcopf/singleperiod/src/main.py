@@ -78,7 +78,7 @@ def read_configfile(alldata, filename):
             condnumber  = 1
 
         elif thisline[0] == 'writesol':
-            alldata['writesol'] = 1
+            writesol    = 1
 
         elif thisline[0] == 'END':
             break
