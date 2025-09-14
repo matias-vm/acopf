@@ -78,6 +78,6 @@ class Logger:
 
 
     def printversion(self):
-        self.joint("Version Sun.Sep..08.201000.2024@mpc-linux-01\n\n")
+        self.joint("Version Sun.Sep.14.183000.2025@frito\n\n")
 
 

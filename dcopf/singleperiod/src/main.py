@@ -19,12 +19,11 @@ import math
 from reader import *
 from dc import *
 
-def start_opf(logfilename):
-    log = Logger(logfilename)
-
+def godcopf(logfilename):
+ 
     alldata        = {}
-    alldata['log'] = log
     alldata['LP']  = {}
+    alldata['logfilename'] = logfilename
 
     return alldata
 
@@ -49,6 +48,7 @@ def read_configfile(alldata, filename):
     casetype                     = ''    
     writeLP                      = 0
     condnumber                   = 0
+    writesol                     = 0
 
     # Read lines of configuration file and save options
     while linenum < len(lines):
@@ -77,6 +77,9 @@ def read_configfile(alldata, filename):
         elif thisline[0] == 'condnumber':
             condnumber  = 1
 
+        elif thisline[0] == 'writesol':
+            alldata['writesol'] = 1
+
         elif thisline[0] == 'END':
             break
 
@@ -91,7 +94,8 @@ def read_configfile(alldata, filename):
     for x in [('casefilename', casefilename), ('lpfilename', lpfilename),
               ('dictionary_input', dictionary_input),
               ('writeLP', writeLP),('casename',casename),
-              ('condnumber',condnumber),('casetype',casetype)]:
+              ('condnumber',condnumber),('casetype',casetype),
+              ('writesol',writesol)]:
         alldata[x[0]] = x[1]
         log.joint("  {} {}\n".format(x[0], x[1]))
 
@@ -102,20 +106,18 @@ def read_configfile(alldata, filename):
 if __name__ == '__main__':
 
     if len(sys.argv) > 3:
-        log.raise_exception('Usage: main.py dc.conf [logfile]\n')
+        sys.exit("Usage: main.py dc.conf [logfile]\n")
 
-    T0 = time.time()
-    
     if len(sys.argv) == 3:
         mylogfile = sys.argv[2] # Optinal logfile
     else:
         sols      = ""
-        mylogfile = "dc.log"
+        mylogfile = "dcopf.log"
 
     log = Logger(mylogfile)
-    
-    alldata = start_opf(mylogfile)
-    log = alldata['log']
+
+    alldata = godcopf(mylogfile)
+    alldata['log'] = log
 
     alldata['t0'] = time.time()
     
@@ -129,8 +131,9 @@ if __name__ == '__main__':
 
     lpformulator_dc(alldata)
 
-    log.joint("\n writing casename, opt stauts, obj, " +
-              "dinfs, runtime, numvars and constrs, and (kappa) to summary_dcopf.log\n")
+    log.joint("\nwriting casename, opt status, obj,"
+              + " dinfs, runtime, numvars and constrs,\n"
+              + "(and kappa) to summary_dcopf.log\n")
 
     alldata['runtime'] = time.time() - alldata['t0']
     summary_dcopf   = open("summary_dcopf.log","a+") 
@@ -162,6 +165,7 @@ if __name__ == '__main__':
         
 
     summary_dcopf.close()    
+    log.joint('\n')
 
     log.close_log()    
        
